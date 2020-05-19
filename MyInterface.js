@@ -20,8 +20,9 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
         this.gui.add(this.scene, 'displayCylinder').name('Display Cylinder');
         this.gui.add(this.scene, 'displaySphere').name('Display Sphere');
-        this.gui.add(this.scene, 'displayNormals').name("Display Normals");
-        this.gui.add(this.scene, 'wireframe').onChange(this.scene.onWireframeChanged.bind(this.scene)).name('Enable Wire Frame');
+        this.gui.add(this.scene, 'displayCubeMap').name('Display Cube Map');
+
+
     
 
         return true;

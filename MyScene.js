@@ -10,6 +10,7 @@ class MyScene extends CGFscene {
         super.init(application);
         this.initCameras();
         this.initLights();
+        
 
         //Background color
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -26,7 +27,8 @@ class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.sphere = new MySphere(this, 16, 8);
-        this.cylinder = new MyCylinder(this,30);
+        this.cylinder = new MyCylinder(this,16);
+        this.cubeMap = new MyCubeMap(this);
 
         
         //Materials
@@ -39,28 +41,32 @@ class MyScene extends CGFscene {
         this.Material.setTextureWrap('REPEAT', 'REPEAT');
         
         //textures
-        this.texture1 = new CGFtexture(this, 'images/earth.jpg');
+        this.texturesphere = new CGFtexture(this, 'images/earth.jpg');
+        this.texturecubemap =  new CGFtexture(this, 'images/cubemap.png'),
+        
 
-        this.objects=[this.sphere,this.cyclinder];
-        this.textures = [this.texture1];
+        this.objects=[this.sphere,this.cylinder];
+        this.textures = [this.texturesphere, this.texturecubemap];
+        
+        
         this.objectID = {
             'Sphere': 0,
-            'Cylinder': 1
+            'Cylinder': 1,
+            'Cube': 2
         };
-        this.textureId = {
-            'Earth': 0
-
+        this.textureList = {
+            'Earth' : 0,
+            'CubeMap' : 1
         };
 
 
         //Objects connected to MyInterface
         this.selectedTexture = 0;
         this.selectedObject = 0;
-        this.wireframe = false;
         this.displayAxis = true;
-        this.displayCylinder = true;
-        this.displayNormals = false;
+        this.displayCylinder = false;
         this.displaySphere = true;
+        this.displayCubeMap = true;
         this.scaleFactor = 1;
 
     }
@@ -78,13 +84,6 @@ class MyScene extends CGFscene {
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
-    }
-
-    onWireframeChanged(option) {
-        if (option)
-            this.objects[this.selectedObject].setLineMode();
-        else
-            this.objects[this.selectedObject].setFillMode();
     }
 
     // called periodically (as per setUpdatePeriod() in init())
@@ -107,30 +106,28 @@ class MyScene extends CGFscene {
         if (this.displayAxis)
             this.axis.display();
            
-
+        this.setDefaultAppearance();
+        this.pushMatrix();
         
         // ---- BEGIN Primitive drawing section
 
          if (this.displayCylinder)
             this.cylinder.display();
     
-        this.Material.setTexture(this.texture1);
-        this.Material.apply();
 
         if (this.displaySphere)
+        {
+            this.Material.setTexture(this.texturesphere);
+            this.Material.apply();
             this.sphere.display();
+        }
 
-        this.setDefaultAppearance();
-
-        if (this.displayNormals)
-            this.objects[this.selectedObject].enableNormalViz();
-        else
-            this.objects[this.selectedObject].disableNormalViz();
-    
-        this.objects[this.selectedObject].display();
-
-
-
+        if(this.displayCubeMap){
+            this.Material.setTexture(this.texturecubemap);
+            this.Material.apply();
+            this.cubeMap.display();
+        }
+        this.popMatrix();
 
         // ---- END Primitive drawing section
     }
