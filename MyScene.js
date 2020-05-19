@@ -39,29 +39,44 @@ class MyScene extends CGFscene {
         this.Material.setShininess(10.0);
         this.Material.loadTexture('images/earth.png');
         this.Material.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.backgroundMaterial = new CGFappearance(this);
+        this.backgroundMaterial.setAmbient(0.8, 0.8, 0.8, 1);
+        this.backgroundMaterial.setDiffuse(0, 0, 0, 1);
+        this.backgroundMaterial.setSpecular(0, 0, 0, 1);
+        this.backgroundMaterial.setEmission( 1, 1, 1, 1 );
+        this.backgroundMaterial.setShininess(10.0);
+        this.backgroundMaterial.loadTexture('images/cubemap.png');
+        this.backgroundMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        
         
         //textures
         this.texturesphere = new CGFtexture(this, 'images/earth.jpg');
-        this.texturecubemap =  new CGFtexture(this, 'images/cubemap.png'),
-        
+        this.textures = [this.texturesphere];
+        this.textureID = {
+            'Earth' : 0,
+            
+        };
 
-        this.objects=[this.sphere,this.cylinder];
-        this.textures = [this.texturesphere, this.texturecubemap];
-        
-        
+        this.background1 =  new CGFtexture(this, 'images/cubemap.png');
+        this.backgrounds = [this.background1];
+        this.backgroundID = {
+            'Default': 0,
+        };
+
+        this.objects=[this.sphere,this.cylinder, this.cubeMap];
         this.objectID = {
             'Sphere': 0,
             'Cylinder': 1,
-            'Cube': 2
+            'Cube': 2,
         };
-        this.textureList = {
-            'Earth' : 0,
-            'CubeMap' : 1
-        };
+
+        this.background
 
 
         //Objects connected to MyInterface
         this.selectedTexture = 0;
+        this.selectedBackground = 0;
         this.selectedObject = 0;
         this.displayAxis = true;
         this.displayCylinder = false;
@@ -123,8 +138,7 @@ class MyScene extends CGFscene {
         }
 
         if(this.displayCubeMap){
-            this.Material.setTexture(this.texturecubemap);
-            this.Material.apply();
+            this.backgroundMaterial.setTexture(this.backgrounds[this.selectedBackground]);
             this.cubeMap.display();
         }
         this.popMatrix();
