@@ -1,5 +1,4 @@
-/**
- * MyQuad
+/** MyQuad
  * @constructor
  * @param scene - Reference to MyScene object
  */

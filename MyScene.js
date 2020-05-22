@@ -30,7 +30,7 @@ class MyScene extends CGFscene {
         this.sphere = new MySphere(this, 16, 8);
         this.cylinder = new MyCylinder(this,16);
         this.cubeMap = new MyCubeMap(this);
-        this.vehicle = new MyVehicle(this, 16, 8);
+        this.vehicle = new MyVehicle(this);
 
         
         //Materials
@@ -53,6 +53,7 @@ class MyScene extends CGFscene {
         
         //textures
         this.texturesphere = new CGFtexture(this, 'images/earth.jpg');
+        this.grey = new CGFtexture(this, 'images/grey.jpg')
         this.textures = [this.texturesphere];
         this.textureID = {
             'Earth' : 0,
@@ -106,37 +107,34 @@ class MyScene extends CGFscene {
 
 
     checkKeys(t) {
-        var text = "Keys pressed: ";
-        var keysPressed = false;
-        if(this.vehicle.autopilot == false) 
-        {
+        let keysPressed = false;
+
             if (this.gui.isKeyPressed("KeyW")) {
-                text += " W ";
                 this.vehicle.accelerate(0.1*this.speedFactor);
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyS")) {
-                text += " S ";
                 this.vehicle.accelerate(-0.1*this.speedFactor);
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyA")) {
-                text += " A ";
                 this.vehicle.turn(5);
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyD")) {
-                text += " D ";
+
                 this.vehicle.turn(-5);
                 keysPressed = true;
             }
-        }
-        if(this.gui.isKeyPressed("KeyR")){
-            text +="R";
+        if(this.gui.isKeyPressed("KeyR"))
+        {
             this.resetVehicle();
             keysPressed = true;
         }
-    }
+        if (keysPressed)
+        this.vehicle.update();
+ 
+}
 
     resetVehicle(){
         this.vehicle.reset();
@@ -145,6 +143,7 @@ class MyScene extends CGFscene {
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.checkKeys(t);
+        this.vehicle.update();
     }
 
     display() {
@@ -184,7 +183,13 @@ class MyScene extends CGFscene {
             this.cubeMap.display();
         }
 
-        
+        if(this.displayVehicle){
+            this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+            this.Material.setTexture(this.grey);
+            this.Material.apply();
+            this.vehicle.display();
+
+        }
 
     
         

@@ -1,9 +1,9 @@
 /**
- * MySquare
+ * MyQuad2
  * @constructor
  * @param scene - Reference to MyScene object
  */
-class MySquare extends CGFobject {
+class MyQuad2 extends CGFobject {
 	constructor(scene, coords) {
 		super(scene);
 		this.initBuffers();
@@ -13,19 +13,16 @@ class MySquare extends CGFobject {
 	
 	initBuffers() {
 		this.vertices = [
-			-0.5, -0.5, 0,	//0
-			0.5, -0.5, 0,	//1
-			-0.5, 0.5, 0,	//2
-			0.5, 0.5, 0		//3
+			-25, -25, 0,	//0
+			25, -25, 0,	//1
+			-25, 25, 0,	//2
+			25, 25, 0		//3
 		];
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
-			1, 3, 2,
-
-			2, 1, 0,
-			2, 3, 1
+			1, 3, 2
 		];
 
 		//Facing Z positive
@@ -66,4 +63,3 @@ class MySquare extends CGFobject {
 		this.updateTexCoordsGLBuffers();
 	}
 }
-

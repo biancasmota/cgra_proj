@@ -9,8 +9,7 @@ class MyGondola extends CGFobject {
 
     constructor(scene) {
         super(scene);
-        this.frontsphere = new MySphere(this.scene, 16, 8);
-        this.backsphere = new MySphere(this.scene, 16, 8);
+        this.sphere = new MySphere(this.scene, 16, 8);
         this.cylinder = new MyCylinder(this.scene, 16);
         
         this.initBuffers();
@@ -36,14 +35,14 @@ class MyGondola extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(0, -0.50, 0.29);
         this.scene.scale(0.1, 0.1, 0.1);
-        this.frontsphere.display();
+        this.sphere.display();
         this.scene.popMatrix();
 
         //back sphere
         this.scene.pushMatrix();
         this.scene.translate(0, -0.50, -0.29);
         this.scene.scale(0.1, 0.1, 0.1);
-        this.backsphere.display();
+        this.sphere.display();
         this.scene.popMatrix();       
     }
 }
