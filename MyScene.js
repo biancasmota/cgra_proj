@@ -6,6 +6,7 @@ class MyScene extends CGFscene {
     constructor() {
         super();
     }
+
     init(application) {
         super.init(application);
         this.initCameras();
@@ -29,22 +30,22 @@ class MyScene extends CGFscene {
         this.sphere = new MySphere(this, 16, 8);
         this.cylinder = new MyCylinder(this,16);
         this.cubeMap = new MyCubeMap(this);
+        this.vehicle = new MyVehicle(this, 16, 8);
 
         
         //Materials
         this.Material = new CGFappearance(this);
-        this.Material.setAmbient(0.1, 0.1, 0.1, 1);
+        this.Material.setAmbient(0.7, 0.7, 0.7, 1);
         this.Material.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.Material.setSpecular(0.1, 0.1, 0.1, 1);
+        this.Material.setSpecular(0.2, 0.2, 0.2, 1);
         this.Material.setShininess(10.0);
         this.Material.loadTexture('images/earth.png');
         this.Material.setTextureWrap('REPEAT', 'REPEAT');
 
         this.backgroundMaterial = new CGFappearance(this);
-        this.backgroundMaterial.setAmbient(0.8, 0.8, 0.8, 1);
-        this.backgroundMaterial.setDiffuse(0, 0, 0, 1);
-        this.backgroundMaterial.setSpecular(0, 0, 0, 1);
-        this.backgroundMaterial.setEmission( 1, 1, 1, 1 );
+        this.backgroundMaterial.setAmbient(0.1, 0.1, 0.1, 1);
+        this.backgroundMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.backgroundMaterial.setSpecular(0.1, 0.1, 0.1, 1);
         this.backgroundMaterial.setShininess(10.0);
         this.backgroundMaterial.loadTexture('images/cubemap.png');
         this.backgroundMaterial.setTextureWrap('REPEAT', 'REPEAT');
@@ -69,9 +70,8 @@ class MyScene extends CGFscene {
             'Sphere': 0,
             'Cylinder': 1,
             'Cube': 2,
+            'Vehicle': 3,
         };
-
-        this.background
 
 
         //Objects connected to MyInterface
@@ -82,17 +82,20 @@ class MyScene extends CGFscene {
         this.displayCylinder = false;
         this.displaySphere = true;
         this.displayCubeMap = true;
-        this.scaleFactor = 1;
+        this.displayVehicle = true;
+        this.scaleFactor = 1;        
+        this.speedFactor = 0.5;
 
     }
     initLights() {
+        this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
         this.lights[0].enable();
         this.lights[0].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.5, 0.5, 500, vec3.fromValues(80, 80, 80), vec3.fromValues(0, 0, 0));
     }
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -101,9 +104,47 @@ class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
+
+    checkKeys(t) {
+        var text = "Keys pressed: ";
+        var keysPressed = false;
+        if(this.vehicle.autopilot == false) 
+        {
+            if (this.gui.isKeyPressed("KeyW")) {
+                text += " W ";
+                this.vehicle.accelerate(0.1*this.speedFactor);
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyS")) {
+                text += " S ";
+                this.vehicle.accelerate(-0.1*this.speedFactor);
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyA")) {
+                text += " A ";
+                this.vehicle.turn(5);
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyD")) {
+                text += " D ";
+                this.vehicle.turn(-5);
+                keysPressed = true;
+            }
+        }
+        if(this.gui.isKeyPressed("KeyR")){
+            text +="R";
+            this.resetVehicle();
+            keysPressed = true;
+        }
+    }
+
+    resetVehicle(){
+        this.vehicle.reset();
+    }
+
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
-        //To be done...
+        this.checkKeys(t);
     }
 
     display() {
@@ -138,9 +179,15 @@ class MyScene extends CGFscene {
         }
 
         if(this.displayCubeMap){
-            this.backgroundMaterial.setTexture(this.backgrounds[this.selectedBackground]);
+            this.backgroundMaterial.setTexture(this.background1);
+            this.backgroundMaterial.apply();
             this.cubeMap.display();
         }
+
+        
+
+    
+        
         this.popMatrix();
 
         // ---- END Primitive drawing section
