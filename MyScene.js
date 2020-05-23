@@ -32,6 +32,9 @@ class MyScene extends CGFscene {
         this.cubeMap = new MyCubeMap(this);
         this.vehicle = new MyVehicle(this);
         this.terrain = new MyTerrain(this);
+        this.supply = new MySupply(this);
+
+        this.nSuppliesDelivered = 0;
 
         
         //Materials
@@ -54,7 +57,7 @@ class MyScene extends CGFscene {
         
         //textures
         this.texturesphere = new CGFtexture(this, 'images/earth.jpg');
-        this.grey = new CGFtexture(this, 'images/grey.jpg')
+        this.balloon = new CGFtexture(this, 'images/balloon2.jpg')
         this.textures = [this.texturesphere];
         this.textureID = {
             'Earth' : 0,
@@ -74,6 +77,12 @@ class MyScene extends CGFscene {
             'Cube': 2,
             'Vehicle': 3,
         };
+        this.supplies = [new MySupply(this), new MySupply(this), new MySupply(this), new MySupply(this), new MySupply(this)];
+        this.selectedSupply = 0;
+
+
+        //this.lastTime = 0;
+        this.lastTimeSupply = -1000;
 
 
         //Objects connected to MyInterface
@@ -82,10 +91,11 @@ class MyScene extends CGFscene {
         this.selectedObject = 0;
         this.displayAxis = true;
         this.displayCylinder = false;
-        this.displaySphere = true;
+        this.displaySphere = false;
         this.displayCubeMap = true;
         this.displayVehicle = true;
         this.displayTerrain = true;
+        this.displaySupply = true;
         this.scaleFactor = 1;        
         this.speedFactor = 0.5;
 
@@ -108,7 +118,7 @@ class MyScene extends CGFscene {
     }
 
 
-    checkKeys(t) {
+    checkKeys() {
         let keysPressed = false;
 
             if (this.gui.isKeyPressed("KeyW")) {
@@ -131,21 +141,47 @@ class MyScene extends CGFscene {
         if(this.gui.isKeyPressed("KeyR"))
         {
             this.resetVehicle();
+            this.resetSupplies();
             keysPressed = true;
         }
+
+        if  (this.gui.isKeyPressed("KeyL"))
+        {
+            if (this.selectedSupply < 5){//&& ( t - this.lastTimeSupply) > 750){
+                //console.log(this.vehicle.)
+                this.supplies[this.selectedSupply].drop(this.vehicle.x,this.vehicle.y, this.vehicle.z);
+                this.selectedSupply++;
+                //this.lastTimeSupply = t;
+                this.supplies[this.selectedSupply].update();
+            }
+            keysPressed = true;
+        }
+            
+        
+
         if (keysPressed)
         this.vehicle.update();
- 
-}
+    }
 
     resetVehicle(){
         this.vehicle.reset();
+        this.nSuppliesDelivered = 0;
+    }
+
+    resetSupplies(){
+        for(var i = 0; i < this.selectedSupply; i++){
+            this.supplies[i].reset();
+        }
+        this.selectedSupply = 0;
     }
 
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
-        this.checkKeys(t);
+        this.checkKeys();
         this.vehicle.update();
+        for(let i = 0; i < this.supplies.length; i++){
+            this.supplies[i].update(t);
+        }
     }
 
     display() {
@@ -186,10 +222,15 @@ class MyScene extends CGFscene {
         }
 
         if(this.displayVehicle){
+            for (let i = 0; i < this.supplies.length; i++) {
+                this.supplies[i].display();
+            }
+            this.pushMatrix();
             this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
-            this.Material.setTexture(this.grey);
+            this.Material.setTexture(this.balloon);
             this.Material.apply();
             this.vehicle.display();
+            this.popMatrix();
 
         }
 

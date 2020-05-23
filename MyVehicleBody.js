@@ -37,8 +37,8 @@ class MyVehicleBody extends CGFobject {
         //1 - cima
 
         this.scene.pushMatrix();
-        this.scene.scale(0.4,0.4,0.4);
-        this.scene.translate(0, 2, -7);
+        this.scene.scale(0.5,0.5,0.5);
+        this.scene.translate(0, 2.5, -7);
         this.scene.rotate(this.stabilizerDir, 0,1,0);//todo
         this.scene.rotate(Math.PI/2.0,0,0,1);
         this.propeller.display();
@@ -47,7 +47,7 @@ class MyVehicleBody extends CGFobject {
 
         //2 - baixo
         this.scene.pushMatrix();
-        this.scene.scale(0.4,0.4,0.4);
+        this.scene.scale(0.5,0.5,0.5);
         this.scene.translate(0,-2,-7);
         this.scene.rotate(this.stabilizerDir,0,1,0);//todo
         this.scene.rotate(3*Math.PI/2.0,0,0,1);
@@ -57,7 +57,7 @@ class MyVehicleBody extends CGFobject {
 
         //3
         this.scene.pushMatrix();
-        this.scene.scale(0.4,0.4,0.4);
+        this.scene.scale(0.5,0.5,0.5);
         this.scene.translate(2,0,-7);
         this.scene.rotate(this.stabilizerDir,0,1,0);//todo
         this.propeller.display();
@@ -66,7 +66,7 @@ class MyVehicleBody extends CGFobject {
 
         //4
         this.scene.pushMatrix();
-        this.scene.scale(0.4,0.4,0.4);
+        this.scene.scale(0.5,0.5,0.5);
         this.scene.translate(-2,0,-7);
         this.scene.rotate(Math.PI,0,0,1);//todo
         this.propeller.display();
@@ -77,8 +77,9 @@ class MyVehicleBody extends CGFobject {
 
         //Gondola
         this.scene.pushMatrix();
-        this.scene.scale(0.3,0.3,0.3);
-        this.scene.translate(0,-5,0);
+        this.scene.translate(0,-0.3,0);
+        this.scene.scale(3,3,3);
+        
         this.gondola.display();
         this.scene.popMatrix();
 

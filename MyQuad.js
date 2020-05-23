@@ -23,6 +23,7 @@ class MyQuad extends CGFobject {
 			2,1,0,
 			2,3,1
 
+
 		];
 
 		//Facing Z positive

@@ -2,7 +2,7 @@ class MyPropeller extends CGFobject {
     constructor(scene) {
         super(scene);
 
-        this.quad = new MyQuad(this.scene);
+        this.quad = new MyQuad2(this.scene);
         this.triangle = new MyTriangle(this.scene);
 
         this.initBuffers();
