@@ -69,6 +69,7 @@ class MyCubeMap extends CGFobject
 
     display() 
     {
+        this.scene.backgroundMaterial.apply();
         this.scene.pushMatrix();
         this.scene.scale(50, 50, 50);
 
@@ -78,13 +79,6 @@ class MyCubeMap extends CGFobject
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
         this.quad.display();
         this.scene.popMatrix();
-
-        // this.bottom.apply();
-        // this.scene.pushMatrix();
-        // this.scene.translate(0, -0.5, 0);
-        // this.scene.rotate(Math.PI / 2, 1, 0, 0);
-        // this.quad.display();
-        // this.scene.popMatrix();
 
         this.right.apply();	
         this.scene.pushMatrix();
@@ -118,14 +112,22 @@ class MyCubeMap extends CGFobject
 
     updateTexture()
     {
-        if(this.scene.selectedTexture==0){
+
+        if(this.scene.selectedBackground==0){
             this.top.loadTexture('images/split_cubemap/top.png');
             this.bottom.loadTexture('images/split_cubemap/bottom.png');
             this.right.loadTexture('images/split_cubemap/right.png');
             this.left.loadTexture('images/split_cubemap/left.png');
             this.back.loadTexture('images/split_cubemap/back.png');
             this.front.loadTexture('images/split_cubemap/front.png');
-
+        }
+        if(this.scene.selectedBackground==1){
+            this.top.loadTexture('images/split_cubemap/top2.png');
+            this.bottom.loadTexture('images/split_cubemap2/bottom2.png');
+            this.right.loadTexture('images/split_cubemap2/right2.png');
+            this.left.loadTexture('images/split_cubemap2/left2.png');
+            this.back.loadTexture('images/split_cubemap2/back2.png');
+            this.front.loadTexture('images/split_cubemap2/front2.png');
         }
     }
 

@@ -33,6 +33,8 @@ class MyScene extends CGFscene {
         this.vehicle = new MyVehicle(this);
         this.terrain = new MyTerrain(this);
         this.supply = new MySupply(this);
+        this.flag = new MyFlag(this); 
+        this.billboard = new MyBillboard(this);
 
         this.nSuppliesDelivered = 0;
 
@@ -57,36 +59,42 @@ class MyScene extends CGFscene {
         
         //textures
         this.texturesphere = new CGFtexture(this, 'images/earth.jpg');
-        this.balloon = new CGFtexture(this, 'images/balloon2.jpg')
-        this.textures = [this.texturesphere];
+        this.balloon = new CGFtexture(this, 'images/balloon2.jpg');
+        this.flagtexture = new CGFtexture(this, 'images/flag.png');
+        this.string = new CGFtexture(this, 'images/redrope.png');
+        this.textures = [this.texturesphere, this.balloon, this.flagtexture, this.string];
         this.textureID = {
             'Earth' : 0,
+            'Balloon' : 1,
+            'Flag' :2,
+            'String' : 3
             
         };
 
         this.background1 =  new CGFtexture(this, 'images/cubemap.png');
-        this.backgrounds = [this.background1];
+        this.background2 = new CGFtexture(this, 'images/cubebox2.png');
+        this.backgrounds = [this.background1, this.background2];
         this.backgroundID = {
             'Default': 0,
+            'Desert': 1
         };
 
-        this.objects=[this.sphere,this.cylinder, this.cubeMap];
+        this.objects=[this.sphere,this.cylinder, this.cubeMap, this.vehicle,this.flag];
         this.objectID = {
             'Sphere': 0,
             'Cylinder': 1,
             'Cube': 2,
             'Vehicle': 3,
+            'Flag' : 4
         };
+
+
         this.supplies = [new MySupply(this), new MySupply(this), new MySupply(this), new MySupply(this), new MySupply(this)];
         this.selectedSupply = 0;
-
-
-        //this.lastTime = 0;
         this.lastTimeSupply = -1000;
 
 
         //Objects connected to MyInterface
-        this.selectedTexture = 0;
         this.selectedBackground = 0;
         this.selectedObject = 0;
         this.displayAxis = true;
@@ -96,6 +104,7 @@ class MyScene extends CGFscene {
         this.displayVehicle = true;
         this.displayTerrain = true;
         this.displaySupply = true;
+        this.displayFlag = true;
         this.scaleFactor = 1;        
         this.speedFactor = 0.5;
 
@@ -130,41 +139,46 @@ class MyScene extends CGFscene {
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyA")) {
-                this.vehicle.turn(5);
+                this.vehicle.turn(Math.PI/30);
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyD")) {
 
-                this.vehicle.turn(-5);
+                this.vehicle.turn(-Math.PI/30);
                 keysPressed = true;
             }
         if(this.gui.isKeyPressed("KeyR"))
         {
             this.resetVehicle();
             this.resetSupplies();
+            this.resetBillboard();
             keysPressed = true;
         }
 
         if  (this.gui.isKeyPressed("KeyL"))
         {
-            if (this.selectedSupply < 5){//&& ( t - this.lastTimeSupply) > 750){
-                //console.log(this.vehicle.)
+            if (this.selectedSupply < 5)
+            {
                 this.supplies[this.selectedSupply].drop(this.vehicle.x,this.vehicle.y, this.vehicle.z);
                 this.selectedSupply++;
-                //this.lastTimeSupply = t;
                 this.supplies[this.selectedSupply].update();
+                this.billboard.update();
             }
             keysPressed = true;
         }
             
-        
-
         if (keysPressed)
         this.vehicle.update();
     }
 
     resetVehicle(){
         this.vehicle.reset();
+        this.nSuppliesDelivered = 0;
+    }
+
+    resetBillboard()
+    {
+        this.billboard.reset();
         this.nSuppliesDelivered = 0;
     }
 
@@ -184,6 +198,12 @@ class MyScene extends CGFscene {
         }
     }
 
+
+    selectedTexture() {
+        if(this.selectedBackground == 1)
+            this.cubeMap.updateTexture();
+
+    }
     display() {
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
@@ -216,8 +236,7 @@ class MyScene extends CGFscene {
         }
 
         if(this.displayCubeMap){
-            this.backgroundMaterial.setTexture(this.background1);
-            this.backgroundMaterial.apply();
+            this.backgroundMaterial.setTexture(this.backgrounds[this.selectedBackground]);
             this.cubeMap.display();
         }
 
@@ -231,6 +250,7 @@ class MyScene extends CGFscene {
             this.Material.apply();
             this.vehicle.display();
             this.popMatrix();
+            this.billboard.display();
 
         }
 
@@ -241,7 +261,16 @@ class MyScene extends CGFscene {
             this.popMatrix();
         }
 
-    
+
+        if(this.displayVehicle){
+            this.pushMatrix();
+            this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+            this.Material.setTexture(this.flagtexture);
+            this.Material.apply();
+            this.flag.display();
+            this.popMatrix();
+
+        }
         
         this.popMatrix();
 
