@@ -200,10 +200,11 @@ class MyScene extends CGFscene {
 
 
     selectedTexture() {
-        if(this.selectedBackground == 1)
             this.cubeMap.updateTexture();
-
+            this.terrain.updateTexture();
     }
+
+
     display() {
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
@@ -235,10 +236,15 @@ class MyScene extends CGFscene {
             this.sphere.display();
         }
 
-        if(this.displayCubeMap){
-            this.backgroundMaterial.setTexture(this.backgrounds[this.selectedBackground]);
-            this.cubeMap.display();
-        }
+         if(this.displayCubeMap){
+            
+
+        this.cubeMap.display();
+           
+         }
+        
+        
+        
 
         if(this.displayVehicle){
             for (let i = 0; i < this.supplies.length; i++) {

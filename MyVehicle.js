@@ -83,7 +83,6 @@ class MyVehicle extends CGFobject {
         this.z += this.speed * Math.cos(this.angleYY);
         this.x += this.speed * Math.sin(this.angleYY);
         this.vehicle.setHelixAng(this.speed*t);
-        
 
     }
 

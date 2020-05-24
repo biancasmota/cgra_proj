@@ -121,15 +121,16 @@ class MyCubeMap extends CGFobject
             this.back.loadTexture('images/split_cubemap/back.png');
             this.front.loadTexture('images/split_cubemap/front.png');
         }
-        if(this.scene.selectedBackground==1){
+        else if(this.scene.selectedBackground==1){
             this.top.loadTexture('images/split_cubemap/top2.png');
-            this.bottom.loadTexture('images/split_cubemap2/bottom2.png');
-            this.right.loadTexture('images/split_cubemap2/right2.png');
-            this.left.loadTexture('images/split_cubemap2/left2.png');
-            this.back.loadTexture('images/split_cubemap2/back2.png');
-            this.front.loadTexture('images/split_cubemap2/front2.png');
+            this.bottom.loadTexture('images/split_cubemap/bottom2.png');
+            this.right.loadTexture('images/split_cubemap/right2.png');
+            this.left.loadTexture('images/split_cubemap/left2.png');
+            this.back.loadTexture('images/split_cubemap/back2.png');
+            this.front.loadTexture('images/split_cubemap/front2.png');
         }
     }
+
 
 
 

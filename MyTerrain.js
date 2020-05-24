@@ -28,4 +28,12 @@ class MyTerrain extends CGFobject {
 
         this.scene.setActiveShader(this.scene.defaultShader);
     }
+
+    updateTexture() {
+        if (this.scene.selectedBackground == 0) {
+            this.texture = new CGFtexture(this.scene, "images/terrain.jpg");
+        } else if (this.scene.selectedBackground == 1) {
+            this.texture = new CGFtexture(this.scene, "images/terrain_sand.jpg");
+        }
+    }
 }
