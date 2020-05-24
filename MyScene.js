@@ -33,7 +33,6 @@ class MyScene extends CGFscene {
         this.vehicle = new MyVehicle(this);
         this.terrain = new MyTerrain(this);
         this.supply = new MySupply(this);
-        this.flag = new MyFlag(this); 
         this.billboard = new MyBillboard(this);
 
         this.nSuppliesDelivered = 0;
@@ -72,8 +71,7 @@ class MyScene extends CGFscene {
         };
 
         this.background1 =  new CGFtexture(this, 'images/cubemap.png');
-        this.background2 = new CGFtexture(this, 'images/cubebox2.png');
-        this.backgrounds = [this.background1, this.background2];
+        this.backgrounds = [this.background1];
         this.backgroundID = {
             'Default': 0,
             'Desert': 1
@@ -236,13 +234,10 @@ class MyScene extends CGFscene {
             this.sphere.display();
         }
 
-         if(this.displayCubeMap){
-            
-
-        this.cubeMap.display();
-           
+         if(this.displayCubeMap)
+         {
+            this.cubeMap.display(); 
          }
-        
         
         
 
@@ -267,16 +262,6 @@ class MyScene extends CGFscene {
             this.popMatrix();
         }
 
-
-        if(this.displayVehicle){
-            this.pushMatrix();
-            this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
-            this.Material.setTexture(this.flagtexture);
-            this.Material.apply();
-            this.flag.display();
-            this.popMatrix();
-
-        }
         
         this.popMatrix();
 

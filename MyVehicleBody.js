@@ -7,7 +7,6 @@ class MyVehicleBody extends CGFobject {
         this.propeller = new MyPropeller(scene);
         this.gondola = new MyGondola(scene);
         this.turbine = new MyTurbine(scene);
-        this.flag = new MyFlag(scene);
         this.string = new MyCylinder(this.scene,16);
         this.stabilizerDir = 0;
         this.helixAng = 0;
@@ -82,23 +81,6 @@ class MyVehicleBody extends CGFobject {
         this.scene.translate(-0.3,-1.6,-1.2);
         this.turbine.display();
         this.scene.popMatrix();   
-
-        this.scene.pushMatrix();
-        //this.scene.translate(0,0,-5);
-        this.scene.rotate(Math.PI / 2, 0, 0, 1);
-        this.scene.scale(0.7, 0.7, 2.1);
-        this.scene.translate(0, 0, -3.5);
-        this.flag.display();
-        this.scene.translate(0, -0.1, 0);
-        this.scene.rotate(Math.PI, 0, 0, 1);
-        this.flag.display();
-        /*
-        this.scene.translate(0,0,-5);
-        this.scene.rotate(Math.PI,0,0,1);
-        this.scene.scale(0.65,0.65, 0.65);
-        this.flag.display();
-         */
-        this.scene.popMatrix();
         
     }
 

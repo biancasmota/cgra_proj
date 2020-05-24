@@ -7,16 +7,24 @@ class MyVehicle extends CGFobject {
     constructor(scene) {
         super(scene);
         this.vehicle = new MyVehicleBody(scene);
-
+        this.flag = new MyPlane2(scene, 20);
         this.initBuffers();
-
         this.angleYY = 0;
         this.speed = 0;
         this.x = 0;
         this.y = 0;
         this.z = 0;
 
+        this.varT=0;
+        this.Tant=0;
+        this.onda=0;
+
+        this.flagTexture= new CGFtexture(this.scene,'images/flag.png');
+        this.shader=new CGFshader(this.scene.gl, "shaders/flag.vert", "shaders/flag.frag");
+        this.shader.setUniformsValues({ uSampler2: 3 });
+        this.shader.setUniformsValues({ Speed: 0 });
     }
+
 
     initBuffers() {
         this.vertices = [];
@@ -71,6 +79,9 @@ class MyVehicle extends CGFobject {
         this.initGLBuffers();
     }
 
+ 
+
+
     updateBuffers(complexity) {
         this.slices = 3 + Math.round(9 * complexity); //complexity varies 0-1, so slices varies 3-12
 
@@ -79,10 +90,23 @@ class MyVehicle extends CGFobject {
         this.initNormalVizBuffers();
     }
 
+    updateFlag(t){
+        if(this.Tant==0){
+            this.Tant=t;
+        }
+        else{
+            this.varT=(t-this.Tant)/1000;
+            this.onda+=this.speed*this.varT;
+            this.shader.setUniformsValues({ Speed: this.onda});
+        }
+    }
+
     update(t) {
         this.z += this.speed * Math.cos(this.angleYY);
         this.x += this.speed * Math.sin(this.angleYY);
         this.vehicle.setHelixAng(this.speed*t);
+        this.updateFlag(t,this.speed);
+
 
     }
 
@@ -108,12 +132,25 @@ class MyVehicle extends CGFobject {
         this.angleYY = 0;
     }
 
+    drawFlag(){
+
+        this.scene.setActiveShader(this.shader);
+        this.flagTexture.bind(0);
+
+        this.scene.pushMatrix();
+        this.scene.translate(0,0,-7);
+        this.scene.scale(8,2,5);
+        this.scene.rotate(90*Math.PI/180,0,1,0);
+        this.flag.display();
+        this.scene.popMatrix();      
+    }
 
     display() {
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
         this.scene.rotate(this.angleYY,0,1,0);
         this.vehicle.display();
+        this.drawFlag();
         this.scene.popMatrix();
         this.scene.setDefaultAppearance();
     }
