@@ -4,4 +4,4 @@ grupo 4
 Bianca Sequeira da Mota - up201800169
 Carolina Rosemback Guilhermino - up201800171
 
-A função de piloto não foi implmentada
+A função de piloto automatico não foi implmentada
